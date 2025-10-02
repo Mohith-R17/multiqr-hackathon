@@ -5,7 +5,7 @@ This repository contains a complete solution for the Pharmacy Hackathon. The pro
 
 ##  Setup and Installation
 
-[cite_start]These instructions will guide you through setting up the environment and running the project.
+These instructions will guide you through setting up the environment and running the project.
 
 **1. Prerequisites**
 * Python 3.12+
@@ -37,7 +37,7 @@ This repository contains a complete solution for the Pharmacy Hackathon. The pro
 Instructions on how to use the trained model and retrain it if needed.
 
 **1. Run Training (Optional)**
-The repository already includes a pre-trained model (`best.pt`). [cite_start]However, to retrain the model on the provided dataset, run the following command[cite: 64]. The new model weights will be saved in a new directory inside the `runs/` folder.
+The repository already includes a pre-trained model (`best.pt`). However, to retrain the model on the provided dataset, run the following command. The new model weights will be saved in a new directory inside the `runs/` folder.
 
 python train.py
 
@@ -64,6 +64,7 @@ This will create the required submission file in the outputs folder.
 
 This project follows the recommended repository structure.
 
+```bash
 multiqr-hackathon/
 │
 ├── README.md                # Setup & usage instructions 
@@ -80,5 +81,5 @@ multiqr-hackathon/
 ├── venv/                    # Virtual environment folder (ignored by git)
 ├── src/                     # Source code folder
 └── outputs/                 # Folder for generated submission files
-
+```
 
