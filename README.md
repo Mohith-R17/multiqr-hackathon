@@ -1,85 +1,113 @@
+<div align="center">
 
-# Pharmacy Hackathon - Multi-QR Code Recognition
+# multiqr-hackathon
 
-This repository contains a complete solution for the Pharmacy Hackathon. The project uses a custom-trained YOLOv8 model to detect multiple QR codes on images of medicine packs.
+> A powerful QR code detection tool using YOLOv8.
 
-##  Setup and Installation
+![Language](https://img.shields.io/badge/Python-blue?style=for-the-badge)
+![GitHub Stars](https://img.shields.io/github/stars/Mohith-R17/multiqr-hackathon?style=for-the-badge)
 
-These instructions will guide you through setting up the environment and running the project.
+</div>
 
-**1. Prerequisites**
+---
+
+## 📋 Table of Contents
+- [Overview](#-overview)
+- [Features](#-features)
+- [Getting Started](#-getting-started)
+- [Usage](#-usage)
+- [Project Structure](#-project-structure)
+- [Tech Stack](#️-tech-stack)
+- [Contributing](#-contributing)
+
+---
+
+## 🎯 Overview
+The multiqr-hackathon project is a powerful QR code detection tool that utilizes a custom-trained YOLOv8 model to detect multiple QR codes on images of medicine packs. This project is designed for individuals and organizations looking to automate the process of detecting and decoding QR codes on medicine packs. The project solves the problem of manual QR code detection, which can be time-consuming and prone to errors.
+
+The project consists of several components, including a data loader, a model trainer, and an inference script. The data loader is responsible for loading the dataset, while the model trainer trains the YOLOv8 model on the dataset. The inference script uses the trained model to detect QR codes on new images.
+
+The project is built using Python and utilizes several libraries, including PyTorch, OpenCV, and Ultralytics. The project is designed to be easy to use and requires minimal setup and configuration.
+
+## ✨ Features
+- 🔥 **QR Code Detection** — Detect multiple QR codes on images of medicine packs
+- 📸 **Image Processing** — Load and process images using OpenCV
+- 📊 **Model Training** — Train a custom YOLOv8 model on a dataset
+- 📈 **Inference** — Use the trained model to detect QR codes on new images
+- 📁 **Data Loading** — Load datasets using a custom data loader
+- 📝 **JSON Output** — Output detection results in JSON format
+- 🚀 **Easy to Use** — Simple and intuitive command-line interface
+
+## 🚀 Getting Started
+
+### Prerequisites
 * Python 3.12+
 * Git
+* PyTorch
+* OpenCV
+* Ultralytics
 
-**2. Environment Setup**
-* **Clone the repository:**
-    ```bash
-    git clone <YOUR_GITHUB_REPO_URL_HERE>
-    cd multiqr-hackathon
-    ```
-
-* **Create and activate a virtual environment:**
-    ```bash
-    # Create the environment
-    python -m venv venv
-
-    # Activate on Windows
-    .\venv\Scripts\activate
-    ```
-
-* **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-##  Usage
-
-Instructions on how to use the trained model and retrain it if needed.
-
-**1. Run Training (Optional)**
-The repository already includes a pre-trained model (`best.pt`). However, to retrain the model on the provided dataset, run the following command. The new model weights will be saved in a new directory inside the `runs/` folder.
-
-python train.py
-
-**2. Run Inference (Primary Task)**
-To run detection on a folder of images and generate the submission JSON file, use the 
-
-**infer.py script.**
-
-**Command format:**
-
+### Installation
 ```bash
-
-python infer.py --weights <path_to_model.pt> --input <path_to_images_folder> --output <output_file.json>
+git clone https://github.com/Mohith-R17/multiqr-hackathon
+cd multiqr-hackathon
+pip install -r requirements.txt
 ```
-**Example using the included model and test images:**
 
+### Quick Start
 ```bash
-
-python infer.py --weights best.pt --input test/images/ --output outputs/submission_detection_1.json
+python infer.py --weights best.pt --input images --output output.json
 ```
-This will create the required submission file in the outputs folder.
 
-**Repository Structure**
-
-This project follows the recommended repository structure.
-
+## 📖 Usage
+To use the project, simply run the inference script with the desired input and output paths. For example:
 ```bash
+python infer.py --weights best.pt --input images --output output.json
+```
+This will detect QR codes on the images in the `images` directory and output the results to `output.json`.
+
+## 📁 Project Structure
+```
 multiqr-hackathon/
-│
-├── README.md                # Setup & usage instructions 
-├── requirements.txt         # Python dependencies 
-├── train.py                 # Script to train the model 
-├── infer.py                 # Script to run inference
-├── best.pt                  # Final trained YOLOv8 model weights
-├── data.yaml                # Dataset configuration file for YOLO
-│
-├── train/                   # Training images and labels
-├── valid/                   # Validation images and labels
-└── test/                    # Test images and labels
-│
-├── venv/                    # Virtual environment folder (ignored by git)
-├── src/                     # Source code folder
-└── outputs/                 # Folder for generated submission files
+    evaluate.py
+    infer.py
+    requirements.txt
+    src/
+        datasets/
+            dataloader.py
+        models/
+            model.py
+        utils/
+            helpers.py
+    train.py
 ```
 
+## 🛠️ Tech Stack
+| Technology | Version | Purpose |
+|-----------|---------|---------|
+| Python | 3.12+ | Programming language |
+| PyTorch | latest | Deep learning framework |
+| OpenCV | latest | Computer vision library |
+| Ultralytics | latest | YOLOv8 implementation |
+
+## 🤝 Contributing
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+<div align="center">
+*Documentation auto-generated by [LiveDocAI](https://github.com) — Production-Aware API Intelligence*
+</div>
+---
+
+## ⚠️ Documentation Drift Detected
+
+> The latest commit changes to the README.md file, specifically the removal of text after "The repository already includes a pre-", indicate that the documentation may no longer accurately reflect the project's setup and usage instructions.
+
+*This documentation was auto-regenerated by LiveDocAI to reflect the latest code changes.*
+
+---
