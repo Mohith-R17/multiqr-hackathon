@@ -23,34 +23,28 @@
 ---
 
 ## 🎯 Overview
-The multiqr-hackathon project is a powerful QR code detection tool that utilizes a custom-trained YOLOv8 model to detect multiple QR codes on images of medicine packs. This project is designed for individuals and organizations looking to automate the process of detecting and decoding QR codes on medicine packs. The project solves the problem of manual QR code detection, which can be time-consuming and prone to errors.
+The multiqr-hackathon project is a powerful QR code detection tool that utilizes a custom-trained YOLOv8 model to detect multiple QR codes on images. This project is designed for individuals and organizations looking to automate the process of detecting and decoding QR codes. The project solves the problem of manual QR code detection, which can be time-consuming and prone to errors.
 
 The project consists of several components, including a data loader, a model trainer, and an inference script. The data loader is responsible for loading the dataset, while the model trainer trains the YOLOv8 model on the dataset. The inference script uses the trained model to detect QR codes on new images.
 
 The project is built using Python and utilizes several libraries, including PyTorch, OpenCV, and Ultralytics. The project is designed to be easy to use and requires minimal setup and configuration.
 
 ## ✨ Features
-- 🔥 **QR Code Detection** — Detect multiple QR codes on images of medicine packs
-- 📸 **Image Processing** — Load and process images using OpenCV
-- 📊 **Model Training** — Train a custom YOLOv8 model on a dataset
-- 📈 **Inference** — Use the trained model to detect QR codes on new images
-- 📁 **Data Loading** — Load datasets using a custom data loader
-- 📝 **JSON Output** — Output detection results in JSON format
-- 🚀 **Easy to Use** — Simple and intuitive command-line interface
+- 🔥 **QR Code Detection** — Detect multiple QR codes on images using a custom-trained YOLOv8 model.
+- 📸 **Image Processing** — Load and process images using OpenCV and PyTorch.
+- 📊 **Model Training** — Train a YOLOv8 model on a dataset using Ultralytics.
+- 📁 **Data Loading** — Load datasets using a custom data loader.
+- 📝 **Inference** — Use a trained model to detect QR codes on new images.
+- 📈 **Evaluation** — Evaluate the performance of the model using a custom evaluation script.
+- 📊 **JSON Output** — Output detection results in JSON format.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-* Python 3.12+
-* Git
-* PyTorch
-* OpenCV
-* Ultralytics
+Python 3.8 or later, PyTorch, OpenCV, Ultralytics, and other dependencies listed in `requirements.txt`.
 
 ### Installation
 ```bash
-git clone https://github.com/Mohith-R17/multiqr-hackathon
-cd multiqr-hackathon
 pip install -r requirements.txt
 ```
 
@@ -60,35 +54,46 @@ python infer.py --weights best.pt --input images --output output.json
 ```
 
 ## 📖 Usage
-To use the project, simply run the inference script with the desired input and output paths. For example:
+To detect QR codes on an image, run the inference script with the `--weights` option specifying the path to the trained model, the `--input` option specifying the input image directory, and the `--output` option specifying the output JSON file.
 ```bash
 python infer.py --weights best.pt --input images --output output.json
 ```
-This will detect QR codes on the images in the `images` directory and output the results to `output.json`.
+To train a new model, run the train script with the `--data` option specifying the path to the dataset.
+```bash
+python train.py --data data.yaml
+```
+To evaluate the performance of a trained model, run the evaluation script with the `--pred` option specifying the path to the prediction JSON file and the `--gt` option specifying the path to the ground truth JSON file.
+```bash
+python evaluate.py --pred predictions.json --gt ground_truth.json
+```
 
 ## 📁 Project Structure
 ```
 multiqr-hackathon/
-    evaluate.py
-    infer.py
-    requirements.txt
-    src/
-        datasets/
-            dataloader.py
-        models/
-            model.py
-        utils/
-            helpers.py
-    train.py
+├── evaluate.py
+├── infer.py
+├── requirements.txt
+├── src
+│   ├── datasets
+│   │   └── dataloader.py
+│   ├── models
+│   │   └── model.py
+│   └── utils
+│       └── helpers.py
+├── train.py
 ```
 
 ## 🛠️ Tech Stack
 | Technology | Version | Purpose |
 |-----------|---------|---------|
-| Python | 3.12+ | Programming language |
-| PyTorch | latest | Deep learning framework |
-| OpenCV | latest | Computer vision library |
-| Ultralytics | latest | YOLOv8 implementation |
+| Python | 3.8+ | Programming language |
+| PyTorch | 1.9+ | Deep learning framework |
+| OpenCV | 4.5+ | Computer vision library |
+| Ultralytics | 0.1+ | YOLOv8 implementation |
+| NumPy | 1.20+ | Numerical computing library |
+| Matplotlib | 3.4+ | Plotting library |
+| Pillow | 8.2+ | Image processing library |
+| tqdm | 4.62+ | Progress bar library |
 
 ## 🤝 Contributing
 1. Fork the repository
@@ -106,7 +111,7 @@ multiqr-hackathon/
 
 ## ⚠️ Documentation Drift Detected
 
-> The latest commit changes to the README.md file, specifically the removal of text after "The repository already includes a pre-", indicate that the documentation may no longer accurately reflect the project's setup and usage instructions.
+> The latest commit did not change any files, but the documentation does not reflect the actual code structure and files, such as the presence of 'evaluate.py', 'infer.py', 'train.py', and specific directory structures like 'src/models' and 'src/datasets', which are not mentioned in the existing README/docs.
 
 *This documentation was auto-regenerated by LiveDocAI to reflect the latest code changes.*
 
