@@ -1,99 +1,208 @@
-<div align="center">
-
 # multiqr-hackathon
+> Autonomous API Service
 
-> A powerful QR code detection tool using YOLOv8.
+## 🚀 Features
+- **Multi-QR Code Detection**: Detects and extracts bounding boxes (`[x_min, y_min, x_max, y_max]`) across multiple QR codes in standard image formats using custom YOLOv8 and PyTorch architectures.
+- **End-to-End Training & Inference Pipeline**: Integrated modules for training on custom datasets (`data.yaml`), batch inference execution, and standardized predictions export.
+- **Model Evaluation Framework**: Standardized command-line utility to benchmark predicted bounding boxes against target ground truth datasets.
+- **Low-Latency Microservice Infrastructure**: Sub-millisecond to low-millisecond API endpoints handling operational user and product management traffic.
+- **Flexible PyTorch Backbones**: Modular PyTorch dataset loading (`QRDataset`) and a lightweight convolutional network (`QRDetector`) tailored for real-time edge or CPU execution.
 
-![Language](https://img.shields.io/badge/Python-blue?style=for-the-badge)
-![GitHub Stars](https://img.shields.io/github/stars/Mohith-R17/multiqr-hackathon?style=for-the-badge)
+## 📦 Tech Stack
+- **Language**: Python 3.9+
+- **Machine Learning & Computer Vision**: PyTorch, torchvision, Ultralytics YOLOv8, OpenCV (`opencv-python`), Pillow
+- **Data Science & Processing**: NumPy, Matplotlib, tqdm
+- **API Engine**: REST API Framework (WSGI/ASGI compatible)
 
-</div>
+## 📡 API Reference
+
+### Root & Health Check
+
+#### `GET /`
+Returns the status and health of the API service.
+
+**Response** (`200 OK`):
+```json
+{
+  "status": "online",
+  "version": "1.0.0"
+}
+```
 
 ---
 
-## 📋 Table of Contents
-- [Overview](#-overview)
-- [Features](#-features)
-- [Getting Started](#-getting-started)
-- [Usage](#-usage)
-- [Project Structure](#-project-structure)
-- [Tech Stack](#️-tech-stack)
-- [Contributing](#-contributing)
+### Products Endpoints
+
+#### `GET /api/v1/products`
+Retrieves a list of available products and services.
+
+**Response** (`200 OK`):
+```json
+[
+  {
+    "product_id": "prod_1001",
+    "name": "QR Batch Scanner",
+    "category": "Vision API",
+    "active": true
+  },
+  {
+    "product_id": "prod_1002",
+    "name": "Realtime QR Streamer",
+    "category": "Vision API",
+    "active": true
+  }
+]
+```
+
+#### `GET /api/v1/products/{product_id}`
+Fetches details for a specific product ID.
+
+**Response** (`404 Not Found`):
+```json
+{
+  "error": "ResourceNotFound",
+  "message": "Product 'prod_not_found' was not found.",
+  "status_code": 404
+}
+```
 
 ---
 
-## 🎯 Overview
-The multiqr-hackathon project is a powerful QR code detection tool that utilizes a custom-trained YOLOv8 model to detect multiple QR codes on images. This project is designed for individuals and organizations looking to automate the process of detecting and decoding QR codes. The project solves the problem of manual QR code detection, which can be time-consuming and prone to errors.
+### Users Endpoints
 
-The project consists of several components, including a data loader, a model trainer, and an inference script. The data loader is responsible for loading the dataset, while the model trainer trains the YOLOv8 model on the dataset. The inference script uses the trained model to detect QR codes on new images.
+#### `POST /api/v1/users`
+Creates a new user profile.
 
-The project is built using Python and utilizes several libraries, including PyTorch, OpenCV, and Ultralytics. The project is designed to be easy to use and requires minimal setup and configuration.
+**Request Body**:
+```json
+{
+  "username": "alex_developer",
+  "email": "alex@example.com",
+  "role": "engineer"
+}
+```
 
-## ✨ Features
-- 🔥 **QR Code Detection** — Detect multiple QR codes in an image using a custom-trained YOLOv8 model.
-- 📸 **Image Processing** — Load and process images for QR code detection.
-- 📊 **Model Training** — Train a YOLOv8 model on a dataset for QR code detection.
-- 📁 **Data Loading** — Load a dataset for training and testing the model.
-- 📝 **JSON Output** — Save QR code detection results to a JSON file.
-- 🚀 **Command-Line Interface** — Use a command-line interface to run the model and detect QR codes.
-- 🔍 **Debugging** — Print debugging information to the console for troubleshooting.
+**Response** (`201 Created`):
+```json
+{
+  "user_id": "usr_1002",
+  "username": "alex_developer",
+  "email": "alex@example.com",
+  "role": "engineer",
+  "created_at": "2026-03-31T12:00:00Z"
+}
+```
 
-## 🚀 Getting Started
+#### `PUT /api/v1/users/{user_id}`
+Updates details for an existing user.
+
+**Request Body**:
+```json
+{
+  "email": "usr1001_updated@example.com",
+  "role": "admin"
+}
+```
+
+**Response** (`200 OK`):
+```json
+{
+  "user_id": "usr_1001",
+  "email": "usr1001_updated@example.com",
+  "role": "admin",
+  "updated_at": "2026-03-31T12:05:00Z"
+}
+```
+
+#### `DELETE /api/v1/users/{user_id}`
+Deletes a specified user profile.
+
+**Response** (`200 OK`):
+```json
+{
+  "user_id": "usr_9999",
+  "status": "deleted"
+}
+```
+
+---
+
+### Production Operational Metrics
+
+| Endpoint | Method | Average Latency |
+| :--- | :--- | :--- |
+| `/` | `GET` | 1ms |
+| `/api/v1/products` | `GET` | 2ms |
+| `/api/v1/products/{product_id}` | `GET` | 1ms |
+| `/api/v1/users` | `POST` | 1ms |
+| `/api/v1/users/{user_id}` | `PUT` | 1ms |
+| `/api/v1/users/{user_id}` | `DELETE` | 1ms |
+
+## 🛠️ Getting Started
 
 ### Prerequisites
-Python 3.x, PyTorch, OpenCV, Ultralytics, and other dependencies listed in the `requirements.txt` file.
+- Python 3.9 or higher
+- `pip` package manager
+- Virtual environment tool (`venv` or `conda`)
 
 ### Installation
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-org/multiqr-hackathon.git
+   cd multiqr-hackathon
+   ```
+
+2. **Set up a virtual environment**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install torch torchvision opencv-python numpy matplotlib Pillow tqdm ultralytics
+   ```
+
+### Running the App
+
+#### 1. Model Training
+Train the custom YOLOv8 model on your dataset defined in `data.yaml`:
 ```bash
-pip install -r requirements.txt
+python train.py
 ```
 
-### Quick Start
+#### 2. Run Inference
+Perform batch detection on a folder containing input images (`.jpg`, `.png`, `.jpeg`):
 ```bash
-python infer.py --weights best.pt --input images --output results.json
+python infer.py --weights runs/detect/train/weights/best.pt --input ./data/test_images --output predictions.json
 ```
 
-## 📖 Usage
-To detect QR codes in an image, run the `infer.py` script with the `--weights` option specifying the path to the trained model weights, the `--input` option specifying the input image directory, and the `--output` option specifying the output JSON file path. For example:
-```bash
-python infer.py --weights best.pt --input images --output results.json
+Output format saved to `predictions.json`:
+```json
+[
+  {
+    "image_id": "sample.jpg",
+    "qrs": [
+      {
+        "bbox": [120, 85, 300, 265]
+      }
+    ]
+  }
+]
 ```
-To train a new model, run the `train.py` script with the `--data` option specifying the path to the dataset YAML file. For example:
-```bash
-python train.py --data data.yaml
-```
-To evaluate the model, run the `evaluate.py` script with the `--pred` option specifying the path to the predictions JSON file and the `--gt` option specifying the path to the ground truth JSON file. For example:
+
+#### 3. Evaluate Predictions
+Compare output predictions against ground truth bounding box data:
 ```bash
 python evaluate.py --pred predictions.json --gt ground_truth.json
 ```
 
-## 📁 Project Structure
+#### 4. Run API Service
+Start the service server locally:
+```bash
+python -m uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
 ```
-multiqr-hackathon/
-    evaluate.py
-    infer.py
-    train.py
-    src/
-        datasets/
-            dataloader.py
-        models/
-            model.py
-        utils/
-            helpers.py
-    requirements.txt
-```
-
-## 🛠️ Tech Stack
-| Technology | Version | Purpose |
-|-----------|---------|---------|
-| Python | 3.x | Programming language |
-| PyTorch | latest | Deep learning framework |
-| OpenCV | latest | Computer vision library |
-| Ultralytics | latest | YOLOv8 model implementation |
-| NumPy | latest | Numerical computing library |
-| Matplotlib | latest | Plotting library |
-| Pillow | latest | Image processing library |
-| tqdm | latest | Progress bar library |
 
 ## 🤝 Contributing
 1. Fork the repository
@@ -101,18 +210,12 @@ multiqr-hackathon/
 3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
----
-
-<div align="center">
-*Documentation auto-generated by [LiveDocAI](https://github.com) — Production-Aware API Intelligence*
-</div>
 ---
 
 ## ⚠️ Documentation Drift Detected
 
-> The latest commit did not change any files, but the documentation does not explicitly mention the current code structure, such as the presence of 'evaluate.py', 'infer.py', 'train.py', which could indicate that the documentation is not fully aligned with the actual code.
+> The documentation instructs users to run `train.py` with a `--data` command-line argument, but `train.py` in the actual code takes no arguments.
 
-*This documentation was auto-regenerated by LiveDocAI to reflect the latest code changes.*
+*This documentation was auto-regenerated by DriftGuard to reflect the latest code changes.*
 
 ---
