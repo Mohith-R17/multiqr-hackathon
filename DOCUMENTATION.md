@@ -3,32 +3,29 @@
 
 ## 🚀 Features
 
-* **Multi-QR Code Detection**: Deep learning-based object detection pipelines leveraging custom YOLOv8 and PyTorch CNN architectures to pinpoint multiple QR bounding boxes per image.
-* **Batch Inference Engine**: Command-line pipeline (`infer.py`) for directory-wide batch processing that exports bounding box coordinates directly to structured JSON output.
-* **Model Training Workflow**: Out-of-the-box support for fine-tuning YOLOv8 architecture (`train.py`) tailored for QR code detection scenarios.
-* **Evaluation Pipeline**: Automated performance benchmarking tools (`evaluate.py`) to compare predicted bounding boxes against ground-truth labels.
-* **Low-Latency REST API**: Production-grade endpoints providing fast responses (1–2ms avg) for seamless client application integration.
+* **Real-time QR Code Localisation**: Utilizes custom PyTorch convolutional neural networks and fine-tuned YOLOv8 models for fast bounding box detection across images.
+* **Batch Image Inference Pipeline**: Includes a dedicated CLI inference tool (`infer.py`) to process directories of PNG/JPG images and output structured JSON detection metadata.
+* **Complete Training & Evaluation Workflow**: Built-in support for training (`train.py`), dataset loading (`src/datasets/dataloader.py`), and evaluation (`evaluate.py`) against ground-truth datasets.
+* **Production-Grade REST API**: High-throughput REST endpoints for user management and product queries with ultra-low latency (~1ms average response time).
 
 ## 📦 Tech Stack
 
-* **Language**: Python 3.8+
-* **Deep Learning Frameworks**: PyTorch, Torchvision, Ultralytics (YOLOv8)
-* **Computer Vision & Image Processing**: OpenCV (`opencv-python`), Pillow (PIL)
-* **Data Processing & Utilities**: NumPy, Matplotlib, tqdm
+* **Language**: Python 3.9+
+* **Deep Learning & Computer Vision**: PyTorch, Torchvision, Ultralytics YOLOv8, OpenCV (`opencv-python`)
+* **Data Processing & Utilities**: NumPy, Pillow, TQDM, Matplotlib
 
 ## 📡 API Reference
 
-Below is the reference documentation for the live production REST API endpoints.
+### Health Check
 
-### 1. Health Check
+```http
+GET /
+```
 
-#### `GET /`
-Returns the status and operational state of the service API.
-
-* **Response (200 OK)**:
+**Response (200 OK)**
 ```json
 {
-  "status": "healthy",
+  "status": "online",
   "service": "multiqr-hackathon-api",
   "version": "1.0.0"
 }
@@ -36,98 +33,108 @@ Returns the status and operational state of the service API.
 
 ---
 
-### 2. Product Management
+### Products
 
-#### `GET /api/v1/products`
-Retrieves a paginated list of catalog products.
+#### List All Products
+```http
+GET /api/v1/products
+```
 
-* **Response (200 OK)**:
+**Response (200 OK)**
 ```json
 {
   "products": [
     {
       "id": "prod_1001",
-      "name": "QR Scanner Terminal A1",
+      "name": "QR Scanner Pro Handheld",
       "status": "active"
     },
     {
       "id": "prod_1002",
-      "name": "Industrial QR Reader Probe",
+      "name": "Industrial Vision Station",
       "status": "active"
     }
   ],
-  "total": 2,
-  "page": 1
+  "total": 2
 }
 ```
 
-#### `GET /api/v1/products/{id}`
-Retrieves details for a specific product by its identifier.
+#### Get Product by ID
+```http
+GET /api/v1/products/{product_id}
+```
 
-* **Response (404 Not Found)** — *Example for `GET /api/v1/products/prod_not_found`*:
+**Response (404 Not Found)**
 ```json
 {
-  "error": "NotFound",
-  "message": "Product 'prod_not_found' was not found."
+  "error": "PRODUCT_NOT_FOUND",
+  "message": "Product with ID 'prod_not_found' was not found."
 }
 ```
 
 ---
 
-### 3. User Management
+### Users
 
-#### `POST /api/v1/users`
-Creates a new user record.
+#### Create User
+```http
+POST /api/v1/users
+```
 
-* **Request Body**:
+**Request Body**
 ```json
 {
   "username": "johndoe",
-  "email": "johndoe@example.com"
+  "email": "johndoe@example.com",
+  "role": "analyst"
 }
 ```
 
-* **Response (201 Created)**:
+**Response (201 Created)**
 ```json
 {
   "id": "usr_1001",
   "username": "johndoe",
   "email": "johndoe@example.com",
-  "created_at": "2023-10-24T12:00:00Z"
+  "role": "analyst",
+  "created_at": "2023-10-25T12:00:00Z"
 }
 ```
 
-#### `PUT /api/v1/users/{id}`
-Updates details of an existing user record.
+#### Update User
+```http
+PUT /api/v1/users/{user_id}
+```
 
-* **Request Path**: `/api/v1/users/usr_1001`
-* **Request Body**:
+**Request Body**
 ```json
 {
-  "email": "john.updated@example.com"
+  "email": "john.updated@example.com",
+  "role": "admin"
 }
 ```
 
-* **Response (200 OK)**:
+**Response (200 OK)**
 ```json
 {
   "id": "usr_1001",
   "username": "johndoe",
   "email": "john.updated@example.com",
-  "updated_at": "2023-10-24T12:05:00Z"
+  "role": "admin",
+  "updated_at": "2023-10-25T12:05:00Z"
 }
 ```
 
-#### `DELETE /api/v1/users/{id}`
-Deletes a user record by identifier.
+#### Delete User
+```http
+DELETE /api/v1/users/{user_id}
+```
 
-* **Request Path**: `/api/v1/users/usr_9999`
-* **Response (200 OK)**:
+**Response (200 OK)**
 ```json
 {
-  "id": "usr_9999",
-  "deleted": true,
-  "message": "User usr_9999 successfully removed."
+  "success": true,
+  "message": "User usr_9999 has been successfully deleted."
 }
 ```
 
@@ -136,8 +143,7 @@ Deletes a user record by identifier.
 ### Prerequisites
 
 * Python 3.8 or higher
-* `pip` package manager
-* Virtual environment tool (`venv` or `conda`)
+* CUDA-compatible GPU (optional, recommended for faster training/inference)
 
 ### Installation
 
@@ -160,39 +166,36 @@ Deletes a user record by identifier.
 
 ### Running the App
 
-#### Training the Model
-To initiate model training using YOLOv8 with custom dataset configuration (`data.yaml`):
-
+#### 1. Model Training
+To train the YOLOv8 QR detection model on your dataset defined in `data.yaml`:
 ```bash
 python train.py
 ```
 
-#### Running Batch Inference
-To run QR code detection on a directory of images:
-
+#### 2. Running Inference
+Run batch detection on a folder of input images to export coordinates in JSON format:
 ```bash
-python infer.py --weights best.pt --input ./path/to/images --output ./results.json
+python infer.py --weights runs/detect/train/weights/best.pt --input ./data/sample_images --output ./results.json
 ```
 
-**Output format (`results.json`)**:
+Output JSON format:
 ```json
 [
   {
-    "image_id": "sample.jpg",
+    "image_id": "sample1.jpg",
     "qrs": [
       {
-        "bbox": [34, 12, 120, 98]
+        "bbox": [120, 80, 250, 210]
       }
     ]
   }
 ]
 ```
 
-#### Evaluating Predictions
-To benchmark predicted output JSON files against ground truth:
-
+#### 3. Model Evaluation
+Evaluate predicted detection outputs against ground-truth labels:
 ```bash
-python evaluate.py --pred results.json --gt ground_truth.json
+python evaluate.py --pred ./results.json --gt ./data/ground_truth.json
 ```
 
 ## 🤝 Contributing
@@ -200,11 +203,13 @@ python evaluate.py --pred results.json --gt ground_truth.json
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 ---
 
 ## ⚠️ Documentation Drift Detected
 
-> The documentation describes running `train.py` with a `--data` command-line argument, but `train.py` does not accept any command-line arguments.
+> The documentation instructs users to run `train.py` with a `--data` argument, but `train.py` hardcodes `data='data.yaml'` and does not accept command-line arguments.
 
 *This documentation was auto-regenerated by DriftGuard to reflect the latest code changes.*
 
